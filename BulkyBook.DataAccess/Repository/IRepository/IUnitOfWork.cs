@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BulkyBook.DataAccess.Repository.IRepository
 {
@@ -8,5 +6,7 @@ namespace BulkyBook.DataAccess.Repository.IRepository
     {
         ICategoryRepository Category { get; }
         ISP_Call SP_Call { get; }
+
+        void Save();
     }
 }

@@ -5,9 +5,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Text;
 
 namespace BulkyBook.DataAccess.Repository
 {
@@ -15,11 +13,13 @@ namespace BulkyBook.DataAccess.Repository
     {
         private readonly ApplicationDbContext _db;
         private static string ConnectionString = "";
+
         public SP_Call(ApplicationDbContext db)
         {
             _db = db;
             ConnectionString = db.Database.GetDbConnection().ConnectionString;
         }
+
         public void Dispose()
         {
             _db.Dispose();

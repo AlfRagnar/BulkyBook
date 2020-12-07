@@ -1,12 +1,10 @@
 ﻿using BulkyBook.DataAccess.Data;
 using BulkyBook.DataAccess.Repository.IRepository;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace BulkyBook.DataAccess.Repository
 {
@@ -20,6 +18,7 @@ namespace BulkyBook.DataAccess.Repository
             _db = db;
             this.dbSet = _db.Set<T>();
         }
+
         public void Add(T entity)
         {
             dbSet.Add(entity);
@@ -34,14 +33,14 @@ namespace BulkyBook.DataAccess.Repository
         {
             IQueryable<T> query = dbSet;
 
-            if(filter != null)
+            if (filter != null)
             {
                 query = query.Where(filter);
             }
 
-            if(includeProperties != null)
+            if (includeProperties != null)
             {
-                foreach(var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     query = query.Include(includeProp);
                 }
@@ -71,7 +70,6 @@ namespace BulkyBook.DataAccess.Repository
                 }
             }
 
-            
             return query.FirstOrDefault();
         }
 
