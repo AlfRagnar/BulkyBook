@@ -5,7 +5,6 @@
     var title = "Create Product";
 }
 
-
 <form method="post" enctype="multipart/form-data">
     <div class="row p-3 border">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -159,7 +158,6 @@
             menubar: 'file edit format'
         });
 
-
         function validateInput() {
             if (document.getElementById("uploadBox").value == "") {
                 swal("Error", "Please select an image", "error");
@@ -167,8 +165,6 @@
             }
             return true;
         };
-
     </script>
 
 }
-

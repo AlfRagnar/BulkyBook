@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using BulkyBook.DataAccess.Repository.IRepository;
+﻿using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models;
 using BulkyBook.Models.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.IO;
+using System.Linq;
+
 namespace BulkyBook.Areas.Admin.Controllers
 {
     [Area("Admin")]
@@ -56,7 +55,6 @@ namespace BulkyBook.Areas.Admin.Controllers
                 return NotFound();
             }
             return View(productVM);
-
         }
 
         [HttpPost]
@@ -98,11 +96,9 @@ namespace BulkyBook.Areas.Admin.Controllers
                     }
                 }
 
-
                 if (productVM.Product.Id == 0)
                 {
                     _unitOfWork.Product.Add(productVM.Product);
-
                 }
                 else
                 {
@@ -131,7 +127,6 @@ namespace BulkyBook.Areas.Admin.Controllers
             return View(productVM);
         }
 
-
         #region API CALLS
 
         [HttpGet]
@@ -158,9 +153,8 @@ namespace BulkyBook.Areas.Admin.Controllers
             _unitOfWork.Product.Remove(objFromDb);
             _unitOfWork.Save();
             return Json(new { success = true, message = "Delete Successful" });
-
         }
 
-        #endregion
+        #endregion API CALLS
     }
 }

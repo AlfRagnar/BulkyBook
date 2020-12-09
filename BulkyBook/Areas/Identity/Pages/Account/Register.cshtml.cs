@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using BulkyBook.DataAccess.Repository.IRepository;
+﻿using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models;
 using BulkyBook.Utility;
 using Microsoft.AspNetCore.Authentication;
@@ -15,8 +8,11 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BulkyBook.Areas.Identity.Pages.Account
 {
@@ -70,8 +66,10 @@ namespace BulkyBook.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
             [Required]
             public string Name { get; set; }
+
             public string StreetAddress { get; set; }
             public string City { get; set; }
             public string State { get; set; }
@@ -80,8 +78,8 @@ namespace BulkyBook.Areas.Identity.Pages.Account
             public int? CompanyId { get; set; }
             public string Role { get; set; }
 
-            public IEnumerable<SelectListItem> CompanyList{ get; set; }
-            public IEnumerable<SelectListItem> RoleList{ get; set; }
+            public IEnumerable<SelectListItem> CompanyList { get; set; }
+            public IEnumerable<SelectListItem> RoleList { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -95,7 +93,7 @@ namespace BulkyBook.Areas.Identity.Pages.Account
                     Text = i.Name,
                     Value = i.Id.ToString()
                 }),
-                RoleList = _roleManager.Roles.Where(u => u.Name != SD.Role_User_Indi).Select(X=>X.Name).Select(i => new SelectListItem
+                RoleList = _roleManager.Roles.Where(u => u.Name != SD.Role_User_Indi).Select(x => x.Name).Select(i => new SelectListItem
                 {
                     Text = i,
                     Value = i
@@ -124,47 +122,47 @@ namespace BulkyBook.Areas.Identity.Pages.Account
                     PhoneNumber = Input.PhoneNumber,
                     Role = Input.Role
                 };
-
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    if(!await _roleManager.RoleExistsAsync(SD.Role_Admin))
+                    if (!await _roleManager.RoleExistsAsync(SD.Role_Admin))
                     {
                         await _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin));
                     }
-                    if(!await _roleManager.RoleExistsAsync(SD.Role_Employee))
+                    if (!await _roleManager.RoleExistsAsync(SD.Role_Employee))
                     {
                         await _roleManager.CreateAsync(new IdentityRole(SD.Role_Employee));
                     }
-                    if(!await _roleManager.RoleExistsAsync(SD.Role_User_Comp))
+                    if (!await _roleManager.RoleExistsAsync(SD.Role_User_Comp))
                     {
                         await _roleManager.CreateAsync(new IdentityRole(SD.Role_User_Comp));
                     }
-                    if(!await _roleManager.RoleExistsAsync(SD.Role_User_Indi))
+                    if (!await _roleManager.RoleExistsAsync(SD.Role_User_Indi))
                     {
                         await _roleManager.CreateAsync(new IdentityRole(SD.Role_User_Indi));
                     }
 
-                    if(user.Role == null)
+                    if (user.Role == null)
                     {
                         await _userManager.AddToRoleAsync(user, SD.Role_User_Indi);
                     }
                     else
                     {
-                        if(user.CompanyId > 0)
+                        if (user.CompanyId > 0)
                         {
                             await _userManager.AddToRoleAsync(user, SD.Role_User_Comp);
                         }
                         await _userManager.AddToRoleAsync(user, user.Role);
                     }
+
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     //var callbackUrl = Url.Page(
                     //    "/Account/ConfirmEmail",
                     //    pageHandler: null,
-                    //    values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                    //    values: new { area = "Identity", userId = user.Id, code = code },
                     //    protocol: Request.Scheme);
 
                     //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
@@ -172,18 +170,18 @@ namespace BulkyBook.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email });
                     }
                     else
                     {
-                        if(user.Role == null)
+                        if (user.Role == null)
                         {
                             await _signInManager.SignInAsync(user, isPersistent: false);
                             return LocalRedirect(returnUrl);
                         }
                         else
                         {
-                            // admin is registering a new user
+                            //admin is registering a new user
                             return RedirectToAction("Index", "User", new { Area = "Admin" });
                         }
                     }

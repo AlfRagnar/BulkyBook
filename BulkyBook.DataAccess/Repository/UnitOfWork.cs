@@ -1,6 +1,5 @@
 ﻿using BulkyBook.DataAccess.Data;
 using BulkyBook.DataAccess.Repository.IRepository;
-using BulkyBook.Models;
 
 namespace BulkyBook.DataAccess.Repository
 {
@@ -20,9 +19,9 @@ namespace BulkyBook.DataAccess.Repository
         }
 
         public ICategoryRepository Category { get; private set; }
-        public ICoverTypeRepository CoverType{ get; private set; }
-        public IProductRepository Product{ get; private set; }
-        public ICompanyRepository Company{ get; private set; }
+        public ICoverTypeRepository CoverType { get; private set; }
+        public IProductRepository Product { get; private set; }
+        public ICompanyRepository Company { get; private set; }
         public IApplicationUserRepository ApplicationUser { get; private set; }
         public ISP_Call SP_Call { get; private set; }
 
