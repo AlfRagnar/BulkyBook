@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
 using System.Threading.Tasks;
 
 namespace BulkyBook.Utility
@@ -15,6 +14,7 @@ namespace BulkyBook.Utility
         {
             emailOptions = options.Value;
         }
+
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
             return Execute(emailOptions.SendGridKey, subject, htmlMessage, email);
