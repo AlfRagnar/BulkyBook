@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace BulkyBook.DataAccess.Repository.IRepository
 {
@@ -11,8 +13,8 @@ namespace BulkyBook.DataAccess.Repository.IRepository
         IApplicationUserRepository ApplicationUser { get; }
         ISP_Call SP_Call { get; }
         IShoppingCartRepository ShoppingCart { get; }
-        IOrderDetailRepository OrderDetail { get; }
         IOrderHeaderRepository OrderHeader { get; }
+        IOrderDetailsRepository OrderDetails { get; }
 
         void Save();
     }
