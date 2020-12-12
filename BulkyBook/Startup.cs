@@ -12,17 +12,22 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Stripe;
 using System;
+using System.Globalization;
 
 namespace BulkyBook
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
         }
 
         public IConfiguration Configuration { get; }
+        public IHostEnvironment Environment { get; }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
