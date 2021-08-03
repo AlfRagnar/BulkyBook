@@ -100,7 +100,6 @@ namespace BulkyBook
 
             app.UseAuthentication();
             app.UseAuthorization();
-            dbInitializer.InitializeAsync();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
