@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using BulkyBook.DataAccess.Repository.IRepository;
+using BulkyBook.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulkyBook.ViewComponents
@@ -19,9 +20,9 @@ namespace BulkyBook.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            var userFromDb = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == claims.Value);
+            ClaimsIdentity claimsIdentity = (ClaimsIdentity)User.Identity;
+            Claim claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            ApplicationUser userFromDb = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == claims.Value);
 
             return View(userFromDb);
         }

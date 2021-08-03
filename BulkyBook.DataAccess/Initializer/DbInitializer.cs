@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BulkyBook.DataAccess.Initializer
 {
@@ -25,7 +26,7 @@ namespace BulkyBook.DataAccess.Initializer
 
 
 
-        public void Initialize()
+        public async void  InitializeAsync()
         {
             try
             {
@@ -43,22 +44,22 @@ namespace BulkyBook.DataAccess.Initializer
             if (_db.Roles.Any(r => r.Name == SD.Role_Admin)) return;
 
 
-            _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
-            _roleManager.CreateAsync(new IdentityRole(SD.Role_Employee)).GetAwaiter().GetResult();
-            _roleManager.CreateAsync(new IdentityRole(SD.Role_User_Comp)).GetAwaiter().GetResult();
-            _roleManager.CreateAsync(new IdentityRole(SD.Role_User_Indi)).GetAwaiter().GetResult();
+            await _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin));
+            await _roleManager.CreateAsync(new IdentityRole(SD.Role_Employee));
+            await _roleManager.CreateAsync(new IdentityRole(SD.Role_User_Comp));
+            await _roleManager.CreateAsync(new IdentityRole(SD.Role_User_Indi));
 
-            _userManager.CreateAsync(new ApplicationUser
+            await _userManager.CreateAsync(new ApplicationUser
             {
                 UserName = "admin@gmail.com",
                 Email = "admin@gmail.com",
                 EmailConfirmed = true,
                 Name = "Alf Ragnar"
-            }, "Admin123*").GetAwaiter().GetResult();
+            }, "Admin123*");
 
             ApplicationUser user = _db.ApplicationUsers.Where(u => u.Email == "admin@gmail.com").FirstOrDefault();
 
-            _userManager.AddToRoleAsync(user, SD.Role_Admin).GetAwaiter().GetResult();
+            await _userManager.AddToRoleAsync(user, SD.Role_Admin);
         }
     }
 }

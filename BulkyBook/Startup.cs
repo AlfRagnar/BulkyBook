@@ -37,15 +37,20 @@ namespace BulkyBook
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
+
             services.Configure<EmailOptions>(Configuration);
             services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
             services.Configure<TwilioSettings>(Configuration.GetSection("Twilio"));
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDbInitializer, DbInitializer>();
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
             services.ConfigureApplicationCookie(options =>
@@ -56,13 +61,13 @@ namespace BulkyBook
             });
             services.AddAuthentication().AddFacebook(options =>
             {
-                options.AppId = "***REMOVED***";
-                options.AppSecret = "***REMOVED***";
+                options.AppId = "**REMOVED**";
+                options.AppSecret = "**REMOVED**";
             });
             services.AddAuthentication().AddGoogle(options =>
             {
-                options.ClientId = "***REMOVED***";
-                options.ClientSecret = "***REMOVED***";
+                options.ClientId = "**REMOVED**";
+                options.ClientSecret = "**REMOVED**";
             });
             services.AddSession(options =>
             {
@@ -95,7 +100,7 @@ namespace BulkyBook
 
             app.UseAuthentication();
             app.UseAuthorization();
-            dbInitializer.Initialize();
+            dbInitializer.InitializeAsync();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

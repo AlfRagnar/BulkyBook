@@ -78,22 +78,18 @@ namespace BulkyBook.Areas.Customer.Controllers
         [ActionName("Index")]
         public async Task<IActionResult> IndexPOST()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == claim.Value);
+            ClaimsIdentity claimsIdentity = (ClaimsIdentity)User.Identity;
+            Claim claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            ApplicationUser user = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == claim.Value);
 
             if (user == null)
             {
                 ModelState.AddModelError(string.Empty, "Verification email is empty!");
             }
 
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            var callbackUrl = Url.Page(
-                "/Account/ConfirmEmail",
-                pageHandler: null,
-                values: new { area = "Identity", userId = user.Id, code = code },
-                protocol: Request.Scheme);
+            string callbackUrl = Url.Page("/Account/ConfirmEmail",pageHandler: null,values: (area: "Identity", userId: user.Id, code),protocol: Request.Scheme);
 
             await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
@@ -104,11 +100,10 @@ namespace BulkyBook.Areas.Customer.Controllers
 
         public IActionResult Plus(int cartId)
         {
-            var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault
+            ShoppingCart cart = _unitOfWork.ShoppingCart.GetFirstOrDefault
                             (c => c.Id == cartId, includeProperties: "Product");
             cart.Count += 1;
-            cart.Price = SD.GetPriceBasedOnQuantity(cart.Count, cart.Product.Price,
-                                    cart.Product.Price50, cart.Product.Price100);
+            cart.Price = SD.GetPriceBasedOnQuantity(cart.Count, cart.Product.Price,cart.Product.Price50, cart.Product.Price100);
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
